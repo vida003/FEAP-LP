@@ -135,7 +135,10 @@ document.addEventListener("click", function (e) {
         ? "https://www.youtube-nocookie.com/embed/" + yt[1] + "?rel=0" + (tocar ? "&autoplay=1" : "")
         : "https://player.vimeo.com/video/" + vimeo[1] + (tocar ? "?autoplay=1" : "");
       iframe.title = v.titulo || "Vídeo da FEAP";
+<<<<<<< HEAD
       iframe.referrerPolicy = "strict-origin-when-cross-origin"; // o YouTube exige o referrer (evita o erro 153)
+=======
+>>>>>>> 751f095fcc88e92890367f0e7488953d037c74c9
       iframe.allow = "accelerometer; autoplay; encrypted-media; fullscreen; picture-in-picture";
       iframe.allowFullscreen = true;
       caixa.appendChild(iframe);
@@ -254,6 +257,7 @@ document.addEventListener("click", function (e) {
     });
   });
 })();
+<<<<<<< HEAD
 
 /* ---------- Barra fixa (celular): só aparece depois que o botão do topo sai da tela ---------- */
 (function () {
@@ -267,3 +271,5 @@ document.addEventListener("click", function (e) {
     barra.classList.toggle("visivel", !entradas[0].isIntersecting);
   }).observe(botaoTopo);
 })();
+=======
+>>>>>>> 751f095fcc88e92890367f0e7488953d037c74c9
