@@ -1,41 +1,29 @@
-/* =========================================================
-   FEAP · Landing page do Vestibular de Bolsas 2027
-   1) Preencha CONFIG com os dados confirmados pela FEAP.
-   2) Ajuste as mensagens em MENSAGENS, se quiser.
-   ========================================================= */
 
-/* ---------- 1. Dados da página ----------
-   Campo vazio ("") = a página mostra o marcador amarelo [pendente]
-   (ou esconde o bloco, no caso dos números e da duração/turno). */
 const CONFIG = {
-  whatsapp: "5514996824406",   // (14) 99682-4406, com DDI 55
+  whatsapp: "5514996824406",
 
-  quando: "20 de novembro",                  // ex.: "12 de dezembro, às 9h"
-  dataProva: "20 de novembro",               // ex.: "12 de dezembro"
-  prazoResultado: "",          // ex.: "3 dias"
-  horarioAulas: "à noite, das 19h30 às 22h30",            // ex.: "à noite, das 19h às 22h30"
-  atendimento: "segunda a sábado, das 8h às 20h",             // ex.: "segunda a sexta, das 8h às 21h"
-  transporte: "",              // ex.: "ônibus e vans das prefeituras, com desembarque na FEAP"
+  quando: "20 de novembro",  
+  dataProva: "20 de novembro",
+  prazoResultado: "",
+  horarioAulas: "à noite, das 19h30 às 22h30", 
+  atendimento: "segunda a sábado, das 8h às 20h", 
+  transporte: "",
 
-  duracao: "",                 // cartões de curso, ex.: "4 anos" (some se vazio)
-  turno: "",                   // cartões de curso, ex.: "Noite"
+  duracao: "",
+  turno: "",  
 
-  pctTrabalhando: "",          // faixa de números, ex.: "85" (só o número)
-  empresasParceiras: "",       // faixa de números, ex.: "40"
+  pctTrabalhando: "", 
+  empresasParceiras: "",  
 
-  // Vídeos da seção "Nunca é tarde para começar". Deixe "arquivo" vazio para não mostrar.
-  // arquivo: link do YouTube/Vimeo ou caminho do arquivo, ex.: "video/feap.mp4"
   videos: [
-    { titulo: "Nunca é tarde demais", arquivo: "https://youtube.com/shorts/8o37e2s7NwE", capa: "", vertical: true },
-    { titulo: "Engenharia Civil",     arquivo: "https://youtube.com/shorts/apGK4qkVGS0", capa: "", vertical: true }
+    { titulo: "Nunca é tarde demais", legenda: "\"Aonde você quer estar daqui alguns anos?\"", arquivo: "https://youtube.com/shorts/8o37e2s7NwE", capa: "", vertical: true },
+    { titulo: "Engenharia Civil",     legenda: "\"Construa o seu futuro com a gente, vem ser FEAP!\"", arquivo: "https://youtube.com/shorts/apGK4qkVGS0", capa: "", vertical: true }
   ],
 
-  faqBolsaFim: "",             // resposta do FAQ: a bolsa vale até o fim do curso?
-  faqConvenio: ""              // resposta do FAQ: convênio com empresas
+  faqBolsaFim: "",
+  faqConvenio: ""
 };
 
-/* ---------- 2. Mensagem pronta de cada botão ----------
-   Cada seção envia uma mensagem diferente, para saber de onde veio a conversa. */
 const MENSAGENS = {
   "topo":      "Oi! Quero falar com a FEAP sobre o Vestibular de Bolsas.",
   "hero":      "Oi! Quero saber como funciona a bolsa da FEAP.",
@@ -52,22 +40,19 @@ const MENSAGENS = {
   "rodape":    "Oi! Quero falar com a FEAP."
 };
 
-/* ---------- Ícone do WhatsApp ---------- */
 const ICONE_WA =
   '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/></svg>';
 
-/* ---------- Preenche os dados pendentes ---------- */
 document.querySelectorAll("[data-cfg]").forEach(function (el) {
   const valor = (CONFIG[el.dataset.cfg] || "").trim();
   if (valor) {
     el.textContent = valor;
     el.classList.remove("pendente");
   } else if (el.textContent.trim()) {
-    el.classList.add("pendente"); // mostra o marcador para a equipe ver o que falta
+    el.classList.add("pendente"); 
   }
 });
 
-/* Blocos que só aparecem quando todos os dados existem */
 document.querySelectorAll("[data-needs]").forEach(function (el) {
   const falta = el.dataset.needs.split(" ").some(function (chave) {
     return !(CONFIG[chave] || "").trim();
@@ -75,7 +60,6 @@ document.querySelectorAll("[data-needs]").forEach(function (el) {
   el.hidden = falta;
 });
 
-/* ---------- Links do WhatsApp ---------- */
 function linkWhatsApp(origem) {
   const texto = MENSAGENS[origem] || MENSAGENS["hero"];
   return "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(texto);
@@ -90,9 +74,6 @@ document.querySelectorAll("[data-origem]").forEach(function (el) {
   }
 });
 
-/* ---------- Rastreamento: o toque no botão é a conversão ----------
-   Envia o evento "whatsapp_click" com a seção de origem.
-   Funciona com Google Tag Manager (dataLayer), GA4 (gtag) e Meta Pixel (fbq). */
 document.addEventListener("click", function (e) {
   const alvo = e.target.closest("[data-origem]");
   if (!alvo) return;
@@ -109,33 +90,34 @@ document.addEventListener("click", function (e) {
   }
 });
 
-/* ---------- Vídeos: um único player, com abas para trocar ----------
-   Cada vídeo aceita link do YouTube, link do Vimeo ou arquivo (.mp4, .webm). */
 (function () {
   const secao = document.getElementById("video");
-  const caixa = document.getElementById("video-caixa");
-  const abas = document.getElementById("video-abas");
-  if (!secao || !caixa || !abas) return;
+  const lista = document.getElementById("videos");
+  if (!secao || !lista) return;
 
-  const lista = (CONFIG.videos || []).filter(function (v) {
+  const videos = (CONFIG.videos || []).filter(function (v) {
     return v && (v.arquivo || "").trim();
   });
-  if (!lista.length) { secao.hidden = true; return; }
+  if (!videos.length) { secao.hidden = true; return; }
 
-  function montar(v, tocar) {
-    caixa.textContent = "";                         // remove (e para) o vídeo anterior
-    caixa.classList.toggle("vertical", !!v.vertical);
+  videos.forEach(function (v) {
     const url = v.arquivo.trim();
     const yt = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
     const vimeo = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
 
+    const item = document.createElement("figure");
+    item.className = "video-item " + (v.vertical ? "vertical" : "horizontal");
+    const caixa = document.createElement("div");
+    caixa.className = "video-caixa";
+
     if (yt || vimeo) {
       const iframe = document.createElement("iframe");
       iframe.src = yt
-        ? "https://www.youtube-nocookie.com/embed/" + yt[1] + "?rel=0" + (tocar ? "&autoplay=1" : "")
-        : "https://player.vimeo.com/video/" + vimeo[1] + (tocar ? "?autoplay=1" : "");
+        ? "https://www.youtube-nocookie.com/embed/" + yt[1] + "?rel=0"
+        : "https://player.vimeo.com/video/" + vimeo[1];
       iframe.title = v.titulo || "Vídeo da FEAP";
-      iframe.referrerPolicy = "strict-origin-when-cross-origin"; // o YouTube exige o referrer (evita o erro 153)
+      iframe.loading = "lazy";
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
       iframe.allow = "accelerometer; autoplay; encrypted-media; fullscreen; picture-in-picture";
       iframe.allowFullscreen = true;
       caixa.appendChild(iframe);
@@ -147,34 +129,19 @@ document.addEventListener("click", function (e) {
       video.preload = "metadata";
       if (v.capa) video.poster = v.capa;
       caixa.appendChild(video);
-      if (tocar) video.play().catch(function () {});
     }
-  }
+    item.appendChild(caixa);
 
-  if (lista.length > 1) {
-    lista.forEach(function (v, i) {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.setAttribute("role", "tab");
-      b.setAttribute("aria-selected", i === 0 ? "true" : "false");
-      b.textContent = v.titulo || "Vídeo " + (i + 1);
-      b.addEventListener("click", function () {
-        abas.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-selected", "false"); });
-        b.setAttribute("aria-selected", "true");
-        montar(v, true);
-      });
-      abas.appendChild(b);
-    });
-  } else {
-    abas.hidden = true;
-  }
-
-  montar(lista[0], false);
+    if (v.legenda || v.titulo) {
+      const legenda = document.createElement("figcaption");
+      legenda.textContent = v.legenda || v.titulo;
+      item.appendChild(legenda);
+    }
+    lista.appendChild(item);
+  });
 })();
 
-/* ---------- Aparecer conforme rola a página ----------
-   Cada bloco entra com um leve fade quando chega na tela.
-   Não roda se o aparelho pediu menos movimento. */
+
 (function () {
   const reduzir = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduzir || !("IntersectionObserver" in window)) return;
@@ -194,7 +161,6 @@ document.addEventListener("click", function (e) {
       const el = entrada.target;
       el.classList.add("visivel");
       observador.unobserve(el);
-      // depois da animação, devolve o controle ao CSS normal (hover etc.)
       setTimeout(function () {
         el.classList.remove("revela", "visivel");
         el.style.removeProperty("--atraso");
@@ -203,7 +169,6 @@ document.addEventListener("click", function (e) {
   }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
 
   alvos.forEach(function (el) {
-    // pequeno escalonamento entre irmãos (cartões, passos, perguntas)
     const irmaos = Array.prototype.filter.call(el.parentElement.children, function (x) {
       return x.matches(".curso, li, details, .numeros > div, .info-prova > div");
     });
@@ -214,10 +179,9 @@ document.addEventListener("click", function (e) {
   });
 })();
 
-/* ---------- FAQ: abre e fecha com animação suave ---------- */
 (function () {
   const reduzir = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduzir || !("animate" in Element.prototype)) return; // sem animação: o navegador abre/fecha direto
+  if (reduzir || !("animate" in Element.prototype)) return; 
 
   document.querySelectorAll(".faq details").forEach(function (d) {
     const resumo = d.querySelector("summary");
@@ -225,8 +189,8 @@ document.addEventListener("click", function (e) {
     resumo.addEventListener("click", function (e) {
       e.preventDefault();
 
-      const abrir = !d.open || d._fechando;   // clicou enquanto fechava => reabre
-      const inicio = d.offsetHeight;          // altura que está na tela agora
+      const abrir = !d.open || d._fechando;
+      const inicio = d.offsetHeight;
       if (d._anim) d._anim.cancel();
 
       const bordas = d.offsetHeight - d.clientHeight;
@@ -236,9 +200,9 @@ document.addEventListener("click", function (e) {
       let fim;
       if (abrir) {
         d.open = true;
-        fim = d.offsetHeight;                 // altura com a resposta aberta
+        fim = d.offsetHeight;                
       } else {
-        fim = resumo.offsetHeight + bordas;   // só a pergunta
+        fim = resumo.offsetHeight + bordas;
       }
 
       d._anim = d.animate(
@@ -255,7 +219,6 @@ document.addEventListener("click", function (e) {
   });
 })();
 
-/* ---------- Barra fixa (celular): só aparece depois que o botão do topo sai da tela ---------- */
 (function () {
   const barra = document.querySelector(".barra-fixa");
   const botaoTopo = document.querySelector(".hero .btn");
