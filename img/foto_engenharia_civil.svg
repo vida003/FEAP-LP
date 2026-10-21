@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="40 88 432 320" role="img" aria-label="Capacete de obra">
+  <path fill="#000" d="M96 336c0-110 70-200 160-200s160 90 160 200z"/>
+  <rect fill="#000" x="228" y="104" width="56" height="232" rx="16"/>
+  <path fill="none" stroke="#e3e8f6" stroke-width="12" d="M222 336V150M290 336V150"/>
+  <rect fill="#000" x="56" y="336" width="400" height="56" rx="28"/>
+</svg>
