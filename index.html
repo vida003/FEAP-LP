@@ -13,7 +13,6 @@
 </head>
 <body>
 
-  <!-- Faixa de topo + cabeçalho (sem menu) -->
   <div class="faixa-topo">Vestibular de Bolsas FEAP 2027 · Inscrições abertas</div>
   <header class="topo">
     <div class="container topo-in">
@@ -24,7 +23,6 @@
 
   <main>
 
-    <!-- 01 HERO -->
     <section class="hero" id="inicio">
       <div class="container hero-in">
         <div class="hero-texto">
@@ -39,17 +37,16 @@
           <ul class="selos">
             <li>Presencial em Avaré</li>
             <li>Sem taxa de matrícula</li>
-            <li>Cursos autorizados pelo MEC</li>
+            <li>Autorizado pelo MEC</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- 02 CURSOS -->
     <section class="secao cursos" id="cursos">
       <div class="container">
         <h2>Qual vai ser a sua profissão?</h2>
-        <p class="sub">Quatro cursos presenciais em Avaré. Toque no seu e converse com a gente.</p>
+        <p class="sub">Cinco cursos presenciais em Avaré. Toque no seu e converse com a gente.</p>
         <div class="cursos-grade">
           <a class="curso" data-origem="cursos" href="#">
             <div class="foto-curso"><img src="img/foto_psicologia.png" alt="" width="96" height="96" loading="lazy"></div>
@@ -82,6 +79,16 @@
             </div>
           </a>
           <a class="curso" data-origem="cursos" href="#">
+            <div class="foto-curso"><img src="img/foto_engenharia_civil.svg" alt="" width="96" height="96" loading="lazy"></div>
+            <div class="curso-corpo">
+              <span class="selo-bolsa">Bolsa de até 100%</span>
+              <h3>Engenharia Civil</h3>
+              <p>Seja quem transforma projeto em obra e constrói o futuro da cidade.</p>
+              <p class="curso-meta" data-needs="duracao turno"><span data-cfg="duracao"></span> · <span data-cfg="turno"></span></p>
+              <span class="seta" aria-hidden="true">›</span>
+            </div>
+          </a>
+          <a class="curso" data-origem="cursos" href="#">
             <div class="foto-curso"><img src="img/foto_contabeis.png" alt="" width="96" height="96" loading="lazy"></div>
             <div class="curso-corpo">
               <span class="selo-bolsa">Bolsa de até 100%</span>
@@ -95,7 +102,6 @@
       </div>
     </section>
 
-    <!-- 03 BOLSA -->
     <section class="secao bolsa" id="bolsa">
       <div class="container bolsa-in">
         <div>
@@ -119,7 +125,6 @@
       </div>
     </section>
 
-    <!-- 04 O CAMINHO -->
     <section class="secao caminho" id="caminho">
       <div class="container">
         <h2>Nunca fez faculdade? A gente te mostra o caminho.</h2>
@@ -138,7 +143,6 @@
       </div>
     </section>
 
-    <!-- 05 A PROVA (fundo escuro) -->
     <section class="secao prova" id="prova">
       <div class="container prova-in">
         <div>
@@ -162,7 +166,6 @@
       </div>
     </section>
 
-    <!-- 06 POR QUE A FEAP -->
     <section class="secao porque" id="porque">
       <div class="container porque-in">
         <div class="foto foto-sala"><img src="img/foto_sala_de_aula.jpg" alt="Sala de aula da FEAP com alunos assistindo a uma aula" loading="lazy"></div>
@@ -174,7 +177,6 @@
             <li><h3>Perto de quem ensina</h3><p>Professores que sabem o seu nome e não deixam você ficar para trás.</p></li>
             <li><h3>Perto do emprego</h3><p>Prática desde o começo e ponte com empresas da região.</p></li>
           </ul>
-          <!-- Faixa de números: só aparece quando os dados forem preenchidos no script.js -->
           <div class="faixa-numeros" data-needs="pctTrabalhando empresasParceiras">
             <div><strong><span data-cfg="pctTrabalhando"></span>%</strong><span>trabalhando na área</span></div>
             <div><strong data-cfg="empresasParceiras"></strong><span>empresas parceiras</span></div>
@@ -184,18 +186,15 @@
       </div>
     </section>
 
-    <!-- VÍDEOS (só aparece quando houver vídeo preenchido em CONFIG.videos, no script.js) -->
     <section class="secao video" id="video">
       <div class="container">
-        <h2>Nunca é tarde para começar.</h2>
+        <h2>Não existe idade certa para começar. Existe a vontade de crescer.</h2>
         <p class="sub">Veja como é estudar na FEAP e por que dá tempo de começar agora.</p>
-        <div class="video-abas" id="video-abas" role="tablist" aria-label="Escolha o vídeo"></div>
-        <div class="video-caixa" id="video-caixa"></div>
+        <div class="videos" id="videos"></div>
         <a class="btn btn-wa" data-origem="video" href="#">Quero descobrir minha bolsa</a>
       </div>
     </section>
 
-    <!-- 08 SUA ROTINA -->
     <section class="secao rotina" id="rotina">
       <div class="container rotina-in">
         <div>
@@ -217,7 +216,6 @@
       </div>
     </section>
 
-    <!-- 09 DÚVIDAS -->
     <section class="secao duvidas" id="duvidas">
       <div class="container duvidas-in">
         <h2>Pode perguntar. Nenhuma dúvida é boba.</h2>
@@ -267,7 +265,6 @@
       </div>
     </section>
 
-    <!-- 10 COMEÇAR -->
     <section class="comecar" id="comecar">
       <div class="container comecar-in">
         <div class="foto foto-formatura"><img src="img/foto_formatura.jpg" alt="Cerimônia de formatura na FEAP, com a mesa de professores e as famílias na plateia" loading="lazy"></div>
@@ -280,23 +277,30 @@
 
   </main>
 
-  <!-- RODAPÉ -->
   <footer class="rodape">
     <div class="container rodape-in">
-      <div>
+      <div class="rodape-marca">
         <img class="logo-img" src="img/foto_logo.png" alt="FEAP Avaré Faculdade" width="129" height="44">
-        <p>Av. Dr. Plínio Fagundes, 624, Avaré/SP</p>
+        <p>Vestibular de Bolsas 2027 · Inscrições abertas</p>
+      </div>
+      <div class="rodape-col">
+        <h4>Onde estamos</h4>
+        <p>Av. Dr. Plínio Fagundes, 624</p>
+        <p>Avaré/SP</p>
+      </div>
+      <div class="rodape-col">
+        <h4>Fale com a gente</h4>
         <p>Telefone: <a href="tel:+551437325881">(14) 3732-5881</a></p>
         <p>WhatsApp: <a data-origem="rodape" class="link-wa" href="#">(14) 99682-4406</a></p>
+        <p>Atendimento: <span data-cfg="atendimento">[dias e horário]</span></p>
       </div>
-      <div class="rodape-selos">
-        <!-- Trocar o href pelo link de consulta da FEAP no e-MEC -->
+      <div class="rodape-col">
+        <h4>Credenciamento</h4>
         <a class="selo-emec" href="#" aria-label="Consulta e-MEC">e-MEC</a>
       </div>
     </div>
   </footer>
 
-  <!-- Barra fixa (celular) -->
   <div class="barra-fixa">
     <a class="btn btn-wa" data-origem="barra-fixa" href="#">Quero descobrir minha bolsa</a>
   </div>
