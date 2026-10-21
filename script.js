@@ -183,7 +183,7 @@ document.addEventListener("click", function (e) {
     ".secao h2", ".secao .sub", ".curso", ".cartao-bolsa", ".pontos li",
     ".passos li", ".aviso", ".numeros > div", ".info-prova > div", ".apoio-claro",
     ".motivos li", ".foto-sala", ".faixa-numeros", ".resposta", ".faq details",
-    ".secao .btn", ".secao .apoio", ".comecar-in > *", ".rodape-in > *"
+    ".secao .btn", ".secao .apoio", ".comecar-in > *"
   ].join(","));
 
   document.documentElement.classList.add("anima");
