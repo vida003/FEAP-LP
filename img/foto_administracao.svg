@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="40 96 432 320" role="img" aria-label="Maleta executiva">
+  <path fill="#000" d="M176 144a32 32 0 0 1 32-32h96a32 32 0 0 1 32 32v40h-40v-32h-80v32h-40z"/>
+  <rect fill="#000" x="56" y="176" width="400" height="232" rx="40"/>
+  <rect fill="#e3e8f6" x="56" y="272" width="400" height="16"/>
+  <rect fill="#e3e8f6" x="224" y="248" width="64" height="64" rx="14"/>
+  <rect fill="#000" x="240" y="264" width="32" height="32" rx="8"/>
+</svg>
