@@ -91,8 +91,8 @@ a { color: inherit; }
 .so-desktop { display: none; }
 .selos { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
 .selos li { background: #e9ecfb; color: var(--azul); font-weight: 700; font-size: .85rem; line-height: 1.2; padding: 8px 16px; border-radius: 999px; }
-.foto-hero img { object-position: 45% 90%; }
-.foto-hero { aspect-ratio: 2 / 3; width: 100%; background:
+.foto-hero img { object-position: 43% 90%; transform: scale(1.2);}
+.foto-hero { aspect-ratio: 2 / 2.5; width: 100%; background:
   repeating-linear-gradient(135deg, rgba(255,255,255,.06) 0 14px, rgba(255,255,255,.12) 14px 28px), #2a3b86; color: var(--branco); }
 
 .secao { padding: 64px 0; }
@@ -222,7 +222,7 @@ a { color: inherit; }
   .hero-in { grid-template-columns: 1.1fr .9fr; grid-template-areas: "texto foto" "compl foto"; column-gap: 64px; row-gap: 0; align-content: center; align-items: start; }
   .hero-texto { grid-area: texto; align-self: end; }
   .hero-compl { grid-area: compl; margin-top: 28px; }
-  .foto-hero { grid-area: foto; align-self: center; aspect-ratio: 4 / 5; max-height: 520px; }
+  .foto-hero { grid-area: foto; align-self: center; aspect-ratio: 4 / 5; max-height: 520px;}
   .lead { margin: 20px 0 28px; font-size: 1.2rem; }
   .btn { width: auto; min-width: 320px; }
   .bolsa-in, .prova-in, .porque-in { grid-template-columns: 1fr 1fr; gap: 72px; }

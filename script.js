@@ -13,8 +13,20 @@ const CONFIG = {
   empresasParceiras: "",
 
   videos: [
-    { titulo: "Nunca é tarde demais", legenda: "\"Nunca é tarde demais para começar a construir o seu futuro!\"", arquivo: "\"https://drive.google.com/drive/folders/13lTKVSCO-tsUxfmYBZby6doxKVMU1OFS\"", capa: "", vertical: true },
-    { titulo: "Engenharia Civil",     legenda: "\"Você nunca caminha sozinho sempre tem alguém para ajudar, aprender e crescer junto com você.\"", arquivo: "https://drive.google.com/file/d/1mvHlQ0lS3OGzEAHSAtpWQMmvtyEmBWX9/view", capa: "", vertical: true }
+    {
+      titulo: "Nunca é tarde demais",
+      legenda: "\"Nunca é tarde demais para começar a construir o seu futuro!\"",
+      arquivo: "https://drive.google.com/file/d/1qelf4CGB3bfK2Wac5abcYYGDwUq4oECs/view",
+      capa: "",
+      vertical: true
+    },
+    {
+      titulo: "Engenharia Civil",
+      legenda: "\"Você nunca caminha sozinho. Sempre tem alguém para ajudar, aprender e crescer junto com você.\"",
+      arquivo: "https://drive.google.com/file/d/1mvHlQ0lS3OGzEAHSAtpWQMmvtyEmBWX9/view",
+      capa: "",
+      vertical: true
+    }
   ]
 };
 
@@ -87,33 +99,65 @@ document.addEventListener("click", function (e) {
 (function () {
   const secao = document.getElementById("video");
   const lista = document.getElementById("videos");
+
   if (!secao || !lista) return;
 
   const videos = (CONFIG.videos || []).filter(function (v) {
     return v && (v.arquivo || "").trim();
   });
-  if (!videos.length) { secao.hidden = true; return; }
+
+  if (!videos.length) {
+    secao.hidden = true;
+    return;
+  }
+
+  // Limpa a lista antes de adicionar os vídeos
+  lista.innerHTML = "";
+  secao.hidden = false;
 
   videos.forEach(function (v) {
     const url = v.arquivo.trim();
-    const yt = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
-    const vimeo = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+
+    const yt = url.match(
+      /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+    );
+
+    const vimeo = url.match(
+      /vimeo\.com\/(?:video\/)?([0-9]+)/
+    );
+
+    const drive = url.match(
+      /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/
+    );
 
     const item = document.createElement("figure");
-    item.className = "video-item " + (v.vertical ? "vertical" : "horizontal");
+    item.className =
+      "video-item " + (v.vertical ? "vertical" : "horizontal");
+
     const caixa = document.createElement("div");
     caixa.className = "video-caixa";
 
-    if (yt || vimeo) {
+    if (yt || vimeo || drive) {
       const iframe = document.createElement("iframe");
-      iframe.src = yt
-        ? "https://www.youtube-nocookie.com/embed/" + yt[1] + "?rel=0"
-        : "https://player.vimeo.com/video/" + vimeo[1];
+
+      if (yt) {
+        iframe.src =
+          "https://www.youtube-nocookie.com/embed/" + yt[1] + "?rel=0";
+      } else if (vimeo) {
+        iframe.src =
+          "https://player.vimeo.com/video/" + vimeo[1];
+      } else {
+        iframe.src =
+          "https://drive.google.com/file/d/" + drive[1] + "/preview";
+      }
+
       iframe.title = v.titulo || "Vídeo da FEAP";
       iframe.loading = "lazy";
       iframe.referrerPolicy = "strict-origin-when-cross-origin";
-      iframe.allow = "accelerometer; autoplay; encrypted-media; fullscreen; picture-in-picture";
+      iframe.allow =
+        "autoplay; encrypted-media; fullscreen; picture-in-picture";
       iframe.allowFullscreen = true;
+
       caixa.appendChild(iframe);
     } else {
       const video = document.createElement("video");
@@ -121,9 +165,12 @@ document.addEventListener("click", function (e) {
       video.controls = true;
       video.playsInline = true;
       video.preload = "metadata";
+
       if (v.capa) video.poster = v.capa;
+
       caixa.appendChild(video);
     }
+
     item.appendChild(caixa);
 
     if (v.legenda || v.titulo) {
@@ -131,6 +178,7 @@ document.addEventListener("click", function (e) {
       legenda.textContent = v.legenda || v.titulo;
       item.appendChild(legenda);
     }
+
     lista.appendChild(item);
   });
 })();
