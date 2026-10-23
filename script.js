@@ -111,7 +111,6 @@ document.addEventListener("click", function (e) {
     return;
   }
 
-  // Limpa a lista antes de adicionar os vídeos
   lista.innerHTML = "";
   secao.hidden = false;
 
@@ -188,7 +187,7 @@ document.addEventListener("click", function (e) {
   if (reduzir || !("IntersectionObserver" in window)) return;
 
   const alvos = document.querySelectorAll([
-    ".secao h2", ".secao .sub", ".curso", ".cartao-bolsa", ".pontos li",
+    ".secao h2", ".secao .sub", ".cartao-bolsa", ".pontos li",
     ".passos li", ".aviso", ".numeros > div", ".info-prova > div", ".apoio-claro",
     ".motivos li", ".foto-sala", ".faixa-numeros", ".resposta", ".faq details",
     ".secao .btn", ".secao .apoio", ".comecar-in > *"
@@ -272,4 +271,305 @@ document.addEventListener("click", function (e) {
   new IntersectionObserver(function (entradas) {
     barra.classList.toggle("visivel", !entradas[0].isIntersecting);
   }).observe(botaoTopo);
+})();
+
+
+(function () {
+  const grade = document.querySelector(".cursos-grade");
+  if (!grade) return;
+  const cards = Array.prototype.slice.call(grade.querySelectorAll(".curso"));
+  if (!cards.length) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const PEEK = 14;
+  const ATRASO = 0.1;
+  const n = cards.length;
+  let tops = [];
+  let alvo = 0;
+  let prog = 0;
+  let fim = false;
+  let rodando = false;
+  let ultimo = 0;
+
+  function medir() {
+    tops = cards.map(function (el) { return el.offsetTop; });
+  }
+
+  function aplicar() {
+    for (let i = 0; i < n; i++) {
+      const q = Math.max(0, Math.min(1, (prog - i * ATRASO) / (1 - (n - 1) * ATRASO)));
+      const e = q * q * (3 - 2 * q);
+      const y = (i * PEEK - tops[i]) * (1 - e);
+      cards[i].style.transform = "translate3d(0," + y.toFixed(2) + "px,0)";
+    }
+  }
+
+  function concluir() {
+    fim = true;
+    window.removeEventListener("scroll", ler);
+    window.removeEventListener("resize", remedir);
+    cards.forEach(function (el) {
+      el.style.transform = "";
+      el.style.zIndex = "";
+    });
+    grade.classList.remove("junta");
+  }
+
+  function quadro(t) {
+    const dt = Math.min((t - ultimo) / 1000, 0.05);
+    ultimo = t;
+    prog += (alvo - prog) * (1 - Math.exp(-dt * 7));
+    if (alvo - prog < 0.0008) prog = alvo;
+    if (prog >= 1) { concluir(); rodando = false; return; }
+    aplicar();
+    if (prog === alvo) { rodando = false; return; }
+    requestAnimationFrame(quadro);
+  }
+
+  function ler() {
+    if (fim) return;
+    const r = grade.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const ini = vh * 0.9;
+    const fimY = vh * 0.12;
+    const bruto = Math.max(0, Math.min(1, (ini - r.top) / (ini - fimY)));
+    if (bruto > alvo) alvo = bruto;
+    if (!rodando && alvo > prog) {
+      rodando = true;
+      ultimo = performance.now();
+      requestAnimationFrame(quadro);
+    }
+  }
+
+  function remedir() {
+    if (fim) return;
+    medir();
+    aplicar();
+  }
+
+  cards.forEach(function (el, i) { el.style.zIndex = n - i; });
+  grade.classList.add("junta");
+  medir();
+  aplicar();
+  ler();
+  window.addEventListener("scroll", ler, { passive: true });
+  window.addEventListener("resize", remedir);
+  window.addEventListener("load", remedir);
+})();
+
+function conectar(opc) {
+  const grade = opc.container;
+  if (!grade || !window.matchMedia("(hover: hover)").matches) return;
+
+  const reduzir = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const cards = Array.prototype.slice.call(grade.querySelectorAll(opc.itens));
+  if (cards.length < 2) return;
+
+  const NS = "http://www.w3.org/2000/svg";
+  function criar(tag, attrs, pai) {
+    const n = document.createElementNS(NS, tag);
+    Object.keys(attrs).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+    pai.appendChild(n);
+    return n;
+  }
+
+  const svgLinha = criar("svg", { "class": "trilha-linha", "aria-hidden": "true" }, grade);
+  const base = criar("path", { "class": "trilha-base" }, svgLinha);
+  const prog = criar("path", { "class": "trilha-prog" }, svgLinha);
+  const svgPontos = criar("svg", { "class": "trilha-pontos", "aria-hidden": "true" }, grade);
+
+  const raios = [7, 5.5, 4];
+  const bolinhas = ["#fdc300", "#0094d9", "#8dc63f"].map(function (cor, k) {
+    return criar("circle", { r: raios[k], fill: cor, stroke: "#fff", "stroke-width": 1.5 }, svgPontos);
+  });
+
+  let pts = [], cum = [], dist = [], total = 0;
+  let s = 0, alvo = -1, dir = 1, ativo = false, raf = 0, ultimo = 0;
+
+  function medir() {
+    const w = grade.offsetWidth, h = grade.offsetHeight;
+    svgLinha.setAttribute("viewBox", "0 0 " + w + " " + h);
+    svgPontos.setAttribute("viewBox", "0 0 " + w + " " + h);
+
+    const c = cards.map(function (el) {
+      const a = opc.ancora ? opc.ancora(el) : null;
+      return {
+        x: a ? a.x : el.offsetLeft + el.offsetWidth / 2,
+        y: a ? a.y : el.offsetTop + el.offsetHeight / 2,
+        topo: el.offsetTop, fundo: el.offsetTop + el.offsetHeight
+      };
+    });
+
+    const idx = [0];
+    pts = [{ x: c[0].x, y: c[0].y }];
+    for (let i = 1; i < c.length; i++) {
+      const a = c[i - 1], b = c[i];
+      if (Math.abs(a.y - b.y) > 8 && Math.abs(a.fundo - b.fundo) > 8) {
+        const meio = (a.fundo + b.topo) / 2;
+        pts.push({ x: a.x, y: meio }, { x: b.x, y: meio });
+      }
+      pts.push({ x: b.x, y: b.y });
+      idx.push(pts.length - 1);
+    }
+
+    cum = [0];
+    for (let i = 1; i < pts.length; i++) {
+      cum.push(cum[i - 1] + Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y));
+    }
+    total = cum[cum.length - 1];
+    dist = idx.map(function (i) { return cum[i]; });
+
+    const d = pts.map(function (p, i) { return (i ? "L" : "M") + p.x + " " + p.y; }).join(" ");
+    base.setAttribute("d", d);
+    prog.setAttribute("d", d);
+    if (alvo >= 0) s = dist[alvo];
+    desenhar();
+  }
+
+  function ponto(d) {
+    d = Math.max(0, Math.min(total, d));
+    let k = 1;
+    while (k < cum.length - 1 && cum[k] < d) k++;
+    const seg = cum[k] - cum[k - 1] || 1;
+    const t = (d - cum[k - 1]) / seg;
+    return { x: pts[k - 1].x + (pts[k].x - pts[k - 1].x) * t, y: pts[k - 1].y + (pts[k].y - pts[k - 1].y) * t };
+  }
+
+  function desenhar() {
+    if (!pts.length) return;
+    prog.style.strokeDasharray = Math.max(s, 0) + " " + (total + 20);
+    bolinhas.forEach(function (b, k) {
+      const p = ponto(s - dir * k * 17);
+      b.setAttribute("cx", p.x);
+      b.setAttribute("cy", p.y);
+    });
+  }
+
+  function passo(t) {
+    const dt = Math.min((t - ultimo) / 1000, 0.05);
+    ultimo = t;
+    const diff = dist[alvo] - s;
+    if (Math.abs(diff) < 0.5) {
+      s = dist[alvo];
+      raf = 0;
+      svgPontos.classList.remove("andando");
+      desenhar();
+      return;
+    }
+    dir = diff > 0 ? 1 : -1;
+    const v = Math.max(Math.abs(diff) * 4, 420);
+    s += dir * Math.min(Math.abs(diff), v * dt);
+    desenhar();
+    raf = requestAnimationFrame(passo);
+  }
+
+  function ir(i) {
+    if (opc.bloqueado && opc.bloqueado()) return;
+    if (!pts.length) medir();
+    if (i === alvo && ativo) return;
+    alvo = i;
+    if (!ativo || reduzir) {
+      s = dist[i];
+      ativo = true;
+      svgLinha.classList.add("ativo");
+      desenhar();
+      return;
+    }
+    svgPontos.classList.add("andando");
+    if (!raf) { ultimo = performance.now(); raf = requestAnimationFrame(passo); }
+  }
+
+  function sair() {
+    ativo = false;
+    if (raf) { cancelAnimationFrame(raf); raf = 0; }
+    svgPontos.classList.remove("andando");
+    svgLinha.classList.remove("ativo");
+  }
+
+  function achar(e) {
+    const c = e.target.closest(opc.itens);
+    return c ? cards.indexOf(c) : -1;
+  }
+  grade.addEventListener("mouseover", function (e) { const i = achar(e); if (i >= 0) ir(i); });
+  grade.addEventListener("focusin", function (e) { const i = achar(e); if (i >= 0) ir(i); });
+  grade.addEventListener("mouseleave", sair);
+  grade.addEventListener("focusout", sair);
+
+  medir();
+  window.addEventListener("load", medir);
+  if ("ResizeObserver" in window) new ResizeObserver(medir).observe(grade);
+  else window.addEventListener("resize", medir);
+}
+
+conectar({
+  container: document.querySelector(".cursos-grade"),
+  itens: ".curso",
+  bloqueado: function () { return document.querySelector(".cursos-grade").classList.contains("junta"); }
+});
+
+conectar({
+  container: document.querySelector(".passos"),
+  itens: "li",
+  ancora: function (el) {
+    if (window.matchMedia("(min-width: 900px)").matches) return null;
+    return { x: el.offsetLeft + 26, y: el.offsetTop + 26 };
+  }
+});
+(function () {
+  const car = document.querySelector("[data-carrossel]");
+  if (!car) return;
+  const trilha = car.querySelector(".carrossel-trilha");
+  const slides = Array.prototype.slice.call(trilha.children);
+  const n = slides.length;
+  if (n < 2) return;
+
+  const clone = slides[0].cloneNode(true);
+  clone.setAttribute("aria-hidden", "true");
+  const ci = clone.querySelector("img");
+  ci.removeAttribute("fetchpriority");
+  ci.alt = "";
+  trilha.appendChild(clone);
+
+  const pontos = document.createElement("div");
+  pontos.className = "carrossel-pontos";
+  const botoes = slides.map(function (_, k) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("aria-label", "Ver foto " + (k + 1));
+    b.addEventListener("click", function () { ir(k); reiniciar(); });
+    pontos.appendChild(b);
+    return b;
+  });
+  car.appendChild(pontos);
+
+  let i = 0, timer = null;
+
+  function marcar() {
+    botoes.forEach(function (b, k) { b.classList.toggle("ativo", k === i % n); });
+  }
+  function ir(k) {
+    i = k;
+    trilha.style.transform = "translateX(" + (-i * 100) + "%)";
+    marcar();
+  }
+  trilha.addEventListener("transitionend", function (e) {
+    if (e.target !== trilha || i !== n) return;
+    trilha.classList.add("sem-transicao");
+    i = 0;
+    trilha.style.transform = "translateX(0)";
+    void trilha.offsetWidth;
+    trilha.classList.remove("sem-transicao");
+    marcar();
+  });
+  function proxima() { if (i < n) ir(i + 1); }
+  function iniciar() { if (!timer) timer = setInterval(proxima, 4500); }
+  function parar() { clearInterval(timer); timer = null; }
+  function reiniciar() { parar(); iniciar(); }
+
+  marcar();
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  iniciar();
+  car.addEventListener("mouseenter", parar);
+  car.addEventListener("mouseleave", iniciar);
+  document.addEventListener("visibilitychange", function () { document.hidden ? parar() : iniciar(); });
 })();

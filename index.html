@@ -16,7 +16,14 @@
   <div class="faixa-topo">Vestibular de Bolsas FEAP 2027 · Inscrições abertas</div>
   <header class="topo">
     <div class="container topo-in">
-      <img class="logo-img" src="img/foto_logo.png" alt="FEAP Avaré Faculdade" width="129" height="44">
+      <img class="logo-img" src="img/foto_logo.png" alt="FEAP Avaré Faculdade" width="188" height="64">
+      <nav class="topo-menu" aria-label="Seções da página">
+        <a href="#cursos">Cursos</a>
+        <a href="#bolsa">Bolsa</a>
+        <a href="#caminho">Passo a passo</a>
+        <a href="#prova">Prova</a>
+        <a href="#duvidas">Dúvidas</a>
+      </nav>
       <a class="btn btn-wa btn-mini" data-origem="topo" href="#">Falar com a FEAP</a>
     </div>
   </header>
@@ -27,22 +34,36 @@
       <div class="container hero-in">
         <div class="hero-texto">
           <h1>Chegou a sua vez de fazer faculdade.</h1>
-          <p class="lead">Estude na FEAP, em Avaré, com bolsa de 40% a 100%.<span class="so-desktop"> Você não precisa ter tudo resolvido para começar: a gente caminha com você do primeiro dia até o diploma.</span></p>
+          <p class="lead">Estude na <span class="orange-bold">FEAP</span>, em Avaré, com bolsa de <span class="orange-bold">40% a 100%.</span><span class="so-desktop"> Você não precisa ter tudo resolvido para começar: a gente caminha com você do primeiro dia até o diploma.</span></p>
           <a class="btn btn-wa" data-origem="hero" href="#">Quero descobrir minha bolsa</a>
           <p class="apoio so-desktop">Você fala direto com a FEAP pelo WhatsApp.</p>
         </div>
-        <div class="foto foto-hero"><img src="img/foto_alunos.jpg" alt="Formandos da FEAP jogando o capelo para o alto na cerimônia de formatura" width="1600" height="1067" fetchpriority="high"></div>
+        <div class="foto foto-hero" data-carrossel>
+          <div class="carrossel-trilha">
+            <div class="slide" style="--pos: 43% 90%; --zoom: 1.2"><img src="img/foto_alunos.jpg" alt="Formandos da FEAP jogando o capelo para o alto na cerimônia de formatura" width="1600" height="1067" fetchpriority="high"></div>
+            <div class="slide" style="--pos: 52% 40%; --zoom: 1.05"><img src="img/foto_formatura.jpg" alt="Cerimônia de formatura na FEAP, com a mesa de professores e as famílias na plateia" width="1600" height="1052"></div>
+            <div class="slide" style="--pos: 50% 45%; --zoom: 1"><img src="img/foto_equipe.jpg" alt="Equipe e professores da FEAP reunidos no salão" width="1600" height="900"></div>
+            <div class="slide" style="--pos: 38% 40%; --zoom: 1"><img src="img/foto_cerimonia.jpg" alt="Momento de cumprimento durante a cerimônia de formatura da FEAP" width="1600" height="1067"></div>
+          </div>
+        </div>
         <div class="hero-compl">
           <p class="lead-extra so-mobile">Você não precisa ter tudo resolvido para começar: a gente caminha com você do primeiro dia até o diploma.</p>
           <ul class="selos">
-            <li>Presencial em Avaré</li>
-            <li>Sem taxa de matrícula</li>
-            <li>Autorizado pelo MEC</li>
+            <li>📌 Presencial em Avaré</li>
+            <li>✅ Sem taxa de matrícula</li>
+            <li>✅ Autorizado pelo MEC</li>
           </ul>
         </div>
       </div>
     </section>
 
+
+    <div class="faixa-rolante" role="region" aria-label="Inscrições abertas">
+    <div class="faixa-trilha">
+      <div class="faixa-grupo"><span>Inscrições abertas</span><span>Inscrições abertas</span><span>Inscrições abertas</span><span>Inscrições abertas</span><span>Inscrições abertas</span><span>Inscrições abertas</span><span>Inscrições abertas</span><span>Inscrições abertas</span><span>Inscrições abertas</span><span>Inscrições abertas</span></div>
+      <div class="faixa-grupo" aria-hidden="true"><span>Inscrições abertas</span><span>Inscrições abertas</span><span>Inscrições abertas</span><span>Inscrições abertas</span><span>Inscrições abertas</span><span>Inscrições abertas</span><span>Inscrições abertas</span><span>Inscrições abertas</span><span>Inscrições abertas</span><span>Inscrições abertas</span></div>
+    </div>
+  </div>
 
     <section class="secao cursos" id="cursos">
       <div class="container">
@@ -50,7 +71,7 @@
         <p class="sub">Seis cursos presenciais em Avaré. Toque no seu e converse com a gente.</p>
         <div class="cursos-grade">
           <a class="curso" data-origem="cursos" href="#">
-            <div class="foto-curso"><img src="img/foto_psicologia.png" alt="" width="96" height="96" loading="lazy"></div>
+            <div class="foto-curso"><img src="img/foto_psicologia.svg" alt="" width="96" height="96" loading="lazy"></div>
             <div class="curso-corpo">
               <span class="selo-bolsa">Bolsa de até 100%</span>
               <h3>Psicologia</h3>
@@ -60,7 +81,7 @@
             </div>
           </a>
           <a class="curso" data-origem="cursos" href="#">
-            <div class="foto-curso"><img src="img/foto_enfermagem.png" alt="" width="96" height="96" loading="lazy"></div>
+            <div class="foto-curso"><img src="img/foto_enfermagem.svg" alt="" width="96" height="96" loading="lazy"></div>
             <div class="curso-corpo">
               <span class="selo-bolsa">Bolsa de até 100%</span>
               <h3>Enfermagem</h3>
@@ -70,7 +91,7 @@
             </div>
           </a>
           <a class="curso" data-origem="cursos" href="#">
-            <div class="foto-curso"><img src="img/foto_engenharia_da_computacao.png" alt="" width="96" height="96" loading="lazy"></div>
+            <div class="foto-curso"><img src="img/foto_engenharia_da_computacao.svg" alt="" width="96" height="96" loading="lazy"></div>
             <div class="curso-corpo">
               <span class="selo-bolsa">Bolsa de até 100%</span>
               <h3>Engenharia de Computação</h3>
@@ -90,7 +111,7 @@
             </div>
           </a>
           <a class="curso" data-origem="cursos" href="#">
-            <div class="foto-curso"><img src="img/foto_contabeis.png" alt="" width="96" height="96" loading="lazy"></div>
+            <div class="foto-curso"><img src="img/foto_contabeis.svg" alt="" width="96" height="96" loading="lazy"></div>
             <div class="curso-corpo">
               <span class="selo-bolsa">Bolsa de até 100%</span>
               <h3>Ciências Contábeis</h3>
@@ -306,7 +327,7 @@
       </div>
       <div class="rodape-col rodape-emec">
         <h4>Credenciamento</h4>
-        <a href="https://qr.link/fXjRHm" target="_blank" rel="noopener" aria-label="Consultar a FEAP no e-MEC"><img class="emec" src="img/emec.png" alt="QR Code de consulta da FEAP no e-MEC" width="120" height="173" loading="lazy"></a>
+        <a href="https://qr.link/fXjRHm" target="_blank" rel="noopener" aria-label="Consultar a FEAP no e-MEC"><img class="emec" src="img/emec.png" alt="QR Code de consulta da FEAP no e-MEC" width="1764" height="1062" loading="lazy"></a>
       </div>
     </div>
   </footer>
