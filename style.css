@@ -198,7 +198,8 @@ a { color: inherit; }
 .video-item.horizontal { flex-basis: min(88vw, 520px); }
 .video-caixa { aspect-ratio: 16 / 9; border-radius: var(--raio); overflow: hidden; background: var(--azul-escuro); box-shadow: 0 10px 30px rgba(15, 24, 64, .18); }
 .video-item.vertical .video-caixa { aspect-ratio: 9 / 16; }
-.video-caixa video, .video-caixa iframe { display: block; width: 100%; height: 100%; border: 0; object-fit: contain; }
+.video-caixa video { display: block; width: 100%; height: 100%; border: 0; object-fit: contain; }
+.video-caixa iframe { display: block; width: 140%; height: 140%; max-width: none; border: 0; transform: scale(.7143); transform-origin: 0 0; }
 .video-item figcaption { margin-top: 14px; font: 800 1.05rem var(--fonte-titulo); color: var(--azul); }
 
 .rotina-in { display: grid; gap: 36px; align-items: center; }

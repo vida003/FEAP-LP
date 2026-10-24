@@ -3,7 +3,7 @@ const CONFIG = {
   quando: "29 de novembro",
   dataProva: "29 de novembro",
   prazoResultado: "",
-  horarioAulas: "à noite, das 19h às 22h",
+  horarioAulas: "à noite, das 19h às 22h30",
   atendimento: "segunda a sexta, das 9h às 21h",
 
   duracao: "",
